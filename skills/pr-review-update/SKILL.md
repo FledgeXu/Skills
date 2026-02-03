@@ -35,4 +35,4 @@ description: "Use only when updating code based on PR reviews."
 - Push with tracking: `git push -u origin $(git branch --show-current)`
 - If git push fails due to workflow auth errors, pull from master and retry the push.
 - Add a PR comment summarizing the changes made in response to reviews:
-  - `gh pr comment --body "Summary: address review feedback and update implementation details."`
+  - `gh pr comment --body "{Summary: address review feedback and update implementation details.}"`
