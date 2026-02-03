@@ -9,12 +9,6 @@ description: "Use only when updating code based on PR reviews."
 - Require `jq`. Check `jq --version`. If missing, ask the user to install `jq` and stop.
 - Require authenticated `gh` session. Run `gh auth status`. If not authenticated, ask the user to run `gh auth login` (and re-run `gh auth status`) before continuing.
 
-## Naming conventions
-
-- Branch: `codex/{description}` when starting from main/master/default.
-- Commit: `{description}` (terse).
-- PR title: `[codex] {description}` summarizing the full diff.
-
 ## Workflow
 
 - Fetch latest PR review summary, latest inline review comment (with `diff_hunk`), and latest issue comments using:
@@ -27,12 +21,10 @@ description: "Use only when updating code based on PR reviews."
   - `REPO=$(gh repo view --json name --jq .name)`
   - `NUMBER=$(gh pr view --json number --jq .number)`
   - `gh api graphql -f query='query($owner:String!,$repo:String!,$number:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$number){reviewThreads(first:100){nodes{id isResolved}}}}}' -f owner=$OWNER -f repo=$REPO -F number=$NUMBER --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved==false) | .id' | xargs -I{} gh api graphql -f query='mutation($threadId:ID!){resolveReviewThread(input:{threadId:$threadId}){thread{id isResolved}}}' -f threadId={}`
-- If on main/master/default, create a branch: `git checkout -b "codex/{description}"`
-- Otherwise stay on the current branch.
 - Confirm status, then stage everything: `git status -sb` then `git add -A`.
 - Commit tersely with the description: `git commit -m "{description}"`
 - Run checks if not already. If checks fail due to missing deps/tools, install dependencies and rerun once.
 - Push with tracking: `git push -u origin $(git branch --show-current)`
 - If git push fails due to workflow auth errors, pull from master and retry the push.
 - Add a PR comment summarizing the changes made in response to reviews:
-  - `gh pr comment --body "{Summary: address review feedback and update implementation details.}"`
+  - `gh pr comment --body "{address review feedback and update implementation details.}"`
