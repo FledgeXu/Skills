@@ -6,6 +6,7 @@ description: "Use only when the user explicitly asks to stage, commit, push, and
 ## Prerequisites
 
 - Require GitHub CLI `gh`. Check `gh --version`. If missing, ask the user to install `gh` and stop.
+- Require `jq`. Check `jq --version`. If missing, ask the user to install `jq` and stop.
 - Require authenticated `gh` session. Run `gh auth status`. If not authenticated, ask the user to run `gh auth login` (and re-run `gh auth status`) before continuing.
 
 ## Naming conventions
