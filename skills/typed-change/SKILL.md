@@ -7,97 +7,61 @@ description: Use this skill when changing schemas, DTOs, interfaces, models, val
 
 ## Goal
 
-Preserve and improve type safety whenever a data shape changes.
-
-A shape change is never local unless proven otherwise.
+Preserve and improve type safety across the full propagation path of every data-shape change.
 
 ## Use this skill when
 
-- changing request / response shapes
-- changing schemas or DTOs
-- changing interfaces or models
-- updating serializer / deserializer behavior
+- changing request or response shapes
+- changing schemas, DTOs, interfaces, or models
+- updating serializer or deserializer behavior
 - touching typed boundaries in Python, TypeScript, or similar languages
+
+## Test-driven development
+
+Use Red → Green → Refactor for executable contract changes. Choose tests and static checks that protect meaningful boundary behavior and realistic compatibility risks. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Capture the new shape in boundary tests, fixtures, and static expectations.
+3. Confirm the focused test or type check fails for the expected contract mismatch.
+4. Update the smallest complete producer-to-consumer path that makes it pass.
+5. Refactor after runtime tests and static checks are green.
 
 ## Required procedure
 
 ### 1. Find the full contract surface
 
-For the changed shape, identify:
-
-- producers
-- consumers
-- validators
-- serializers / deserializers
-- mappers / converters
-- tests
-- documentation if user-facing
+Identify producers, consumers, validators, serializers, deserializers, mappers, converters, tests, and user-facing documentation.
 
 ### 2. Trace the propagation path
 
-Ask:
-
-- who creates this shape?
-- where is it normalized?
-- where is it validated?
-- where is it translated across boundaries?
-- who transforms it?
-- who reads it?
-- who assumes field presence, nullability, defaults, or enum values?
+Locate creation, normalization, validation, boundary translation, transformation, reads, field-presence assumptions, nullability, defaults, and enum values.
 
 ### 3. Keep shape integrity
 
-Treat type changes as shape changes.
+Use one canonical shape per layer, explicit translation, narrow boundary mappers, and visible invariants.
 
-Prefer:
+### 4. Update linked contracts together
 
-- one canonical shape per layer
-- explicit translation between layers
-- narrow boundary mappers
-- visible invariants
+Update types, validators, runtime checks, serialization, parsing, fixtures, and focused tests as one coherent change.
 
-Do not allow shape drift between layers.
+### 5. Maintain contract alignment
 
-### 4. Update all linked contracts together
+Keep every call site, optionality rule, runtime check, and static type synchronized with the canonical shape.
 
-When a shape changes, update together:
+### 6. Verify statically
 
-- type definitions
-- validators
-- runtime checks
-- serializer / parser logic
-- test fixtures
-- focused tests
+Run affected-module type checks, boundary-shape tests, and exact fixtures.
 
-### 5. Eliminate hidden shape drift
+## Prompt-writing standard
 
-Do not:
-
-- patch one call site and ignore the rest
-- keep stale optionality
-- rely on "it still works at runtime"
-- silently widen types without reason
-
-### 6. Verify statically where possible
-
-Prefer:
-
-- type-checking affected modules
-- tests that cover boundary shapes
-- fixtures that reflect the new contract exactly
+Write every new prompt as a positive, actionable instruction. State the canonical shape, invariants, propagation path, and verification criteria.
 
 ## Output checklist
 
-Report:
-
-- what shape changed
-- which producers and consumers were updated
-- where normalization or translation happens
-- whether validators and serializers were updated
-- what type-check / tests were run
+Report the changed shape, updated producers and consumers, translation point, validator and serializer updates, and proportional verification evidence.
 
 ## Hard rules
 
-- If the shape changed, update the contract everywhere it matters.
-- Type safety is part of correctness, not optional polish.
-- Do not leave runtime and static contracts out of sync.
+- Treat every shape change as a full contract-surface change.
+- Keep runtime and static contracts synchronized.
+- Treat type safety as a core correctness requirement.

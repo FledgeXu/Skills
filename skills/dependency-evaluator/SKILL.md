@@ -7,102 +7,59 @@ description: Use this skill when deciding whether to adopt a package or build cu
 
 ## Goal
 
-Do not default to custom infrastructure when a mature package fits.
-Do not add dependencies casually when local code is simpler and more stable.
+Choose the option with the strongest functional fit, architectural alignment, type safety, and maintenance profile. Favor a mature package for generic infrastructure and focused local code for small stable domain behavior.
 
 ## Use this skill when
 
-- a new package is being considered
-- someone proposes writing custom infrastructure
-- replacing an existing package
-- building generic plumbing such as config, validation, retries, logging, CLI, adapters, parsing, or serialization
+- considering, replacing, or removing a package
+- proposing custom infrastructure
+- building configuration, validation, retry, logging, CLI, adapter, parsing, or serialization plumbing
+
+## Test-driven development
+
+Use Red → Green → Refactor for executable behavior delivered by the selected option. Choose tests that protect required capabilities and realistic integration risks. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Express required behavior and boundary expectations independently of the candidate implementation.
+3. Confirm the test fails for the expected capability gap.
+4. Integrate the smallest suitable package surface or local implementation.
+5. Refactor the adapter after focused and integration tests are green.
 
 ## Evaluation criteria
 
-For each option, evaluate:
-
-### 1. Functional fit
-
-- Does it solve the actual problem?
-- Does it match the current architecture?
-- Does it support the required data model and workflow?
-- Does it reduce custom glue code?
-
-### 2. Complexity cost
-
-- Does it simplify implementation?
-- Does it introduce conceptual weight?
-- Does it force awkward abstractions?
-- Does it create too much framework surface area?
-
-### 3. Maintenance profile
-
-- Is it mature and stable?
-- Is the API understandable?
-- Is the upgrade burden reasonable?
-- Does it reduce or increase bespoke code maintenance?
-
-### 4. Lock-in and portability
-
-- Does it leak into domain code?
-- Can it be isolated behind a small boundary?
-- Will removal later be expensive?
-
-### 5. Ecosystem compatibility
-
-- Does it work with the project language/runtime/toolchain?
-- Does it preserve typing expectations?
-- Does it align with the repository’s patterns?
-
-### 6. Data-shape fit
-
-- Does it work with the repository’s existing data shapes?
-- Does it preserve or improve clarity of boundary translations?
-- Does it make data flow clearer or more opaque?
+Evaluate each option for functional fit, implementation simplicity, conceptual weight, maintenance maturity, upgrade burden, portability, ecosystem compatibility, typing, data-shape fit, and boundary isolation.
 
 ## Decision guidance
 
-Prefer a package when:
+Prefer a package when the problem is generic, package fit is strong, maturity is high, bespoke infrastructure decreases materially, and a small boundary can isolate it.
 
-- the problem is generic
-- the package is mature
-- package fit is strong
-- it reduces bespoke infrastructure materially
-- the package can be isolated behind a small boundary
-
-Prefer custom code when:
-
-- domain logic is the real complexity
-- package fit is poor
-- the package is too heavy
-- the package would distort architecture
-- custom code is truly small, local, and stable
+Prefer custom code when domain logic carries the complexity, package fit is weak, framework weight exceeds its benefit, and local code remains small and stable.
 
 ## Required output format
 
-When making a recommendation, state:
-
 ### Recommendation
 
-- use package / keep current package / write custom code
+- use package, keep current package, or write custom code
 
 ### Why
 
-- concrete fit
-- concrete tradeoffs
-- architecture impact
-- type-safety impact
-- maintenance impact
-- data-flow impact
+- concrete fit and tradeoffs
+- architecture, type-safety, maintenance, and data-flow impact
 
 ### Boundary design
 
-- where the package should be isolated
-- what internal interface should shield the rest of the code
+- isolation point and internal interface
+
+### Verification evidence
+
+- Red and Green for executable behavior, or focused validation for configuration and documentation
+
+## Prompt-writing standard
+
+Write every new prompt as a positive, actionable instruction. Describe the desired evaluation, selection criteria, and boundary outcome.
 
 ## Hard rules
 
-- Never recommend custom infrastructure by reflex.
-- Never recommend a package without explaining what it replaces.
-- Keep dependencies at the edges when possible.
-- Keep domain code independent from vendor-specific details.
+- Evaluate mature packages before choosing custom infrastructure.
+- Explain the capability and custom code each package replaces.
+- Keep dependencies at edges and domain code vendor-independent.

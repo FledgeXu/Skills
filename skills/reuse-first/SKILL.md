@@ -1,13 +1,13 @@
 ---
 name: reuse-first
-description: Use this skill before implementing features, bug fixes, utilities, adapters, services, hooks, scripts, or abstractions. It enforces reuse-first analysis and duplicate-logic avoidance.
+description: Use this skill before implementing features, bug fixes, utilities, adapters, services, hooks, scripts, or abstractions. It enforces reuse-first analysis and canonical logic.
 ---
 
 # Reuse First
 
 ## Goal
 
-Do not create parallel logic when existing code can be extended safely.
+Extend existing code safely and keep one canonical implementation for each responsibility.
 
 Default preference order:
 
@@ -15,111 +15,61 @@ Default preference order:
 2. reuse an existing module with a small adaptation
 3. use a mature package
 4. add a small new abstraction
-5. write one-off custom infrastructure only as a last resort
+5. write focused custom infrastructure after the earlier options prove unsuitable
 
 ## Use this skill when
 
-- adding a feature
-- fixing a bug
-- adding a helper / utility / service / adapter / hook
+- adding a feature or fixing a bug
+- adding a helper, utility, service, adapter, or hook
 - refactoring overlapping logic
-- introducing a new abstraction
-- considering a new dependency
+- introducing an abstraction or dependency
+
+## Test-driven development
+
+Use Red → Green → Refactor for executable behavior changes. Choose tests that protect meaningful behavior or realistic regression risks, with effort proportional to the change. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Confirm the test fails for the expected missing or incorrect behavior.
+3. Reuse or extend the closest existing path with the smallest passing change.
+4. Refactor shared logic while the focused and regression tests stay green.
 
 ## Required procedure
 
 ### 1. Search for nearby prior art
 
-Inspect:
+Inspect neighboring modules, helpers, adapters, contracts, fixtures, scripts, and abstractions with similar responsibility.
 
-- neighboring modules
-- helper functions
-- adapters
-- schemas / DTOs / models
-- test fixtures
-- scripts
-- existing abstractions with similar responsibility
+### 2. Compare data flow
 
-### 2. Reuse by data-flow similarity
+Compare names together with input and output shapes, normalization, validation, transformation pipelines, and boundary translations.
 
-Do not look only for similar names.
-Also look for:
+### 3. Select a reuse candidate
 
-- similar input and output shapes
-- similar normalization steps
-- similar validation stages
-- similar transformation pipelines
-- similar boundary translations
+For each concrete candidate, assess direct extension, clarity-preserving generalization, and architectural fit.
 
-### 3. Identify reuse candidates
+### 4. Keep one canonical path
 
-List concrete reuse candidates:
+Route equivalent responsibilities through the established utility or abstraction. Give one concept one stable name and API shape.
 
-- files
-- functions
-- classes
-- interfaces
-- schemas
-- package wrappers
+### 5. Evaluate package fit
 
-For each candidate, decide:
-
-- can it be extended directly?
-- can it be generalized without harming clarity?
-- would reusing it preserve architecture?
-
-### 4. Avoid duplicate logic
-
-Do not:
-
-- create a second utility because the first one is inconvenient
-- add a "new" / "v2" / "enhanced" path for the same responsibility
-- copy logic and rename it
-- create a parallel abstraction with slightly different API shape
-
-### 5. Decide whether a package is better
-
-Before writing infrastructure-like custom code, evaluate whether a package already solves it.
-
-Typical candidates:
-
-- parsing
-- validation
-- retries / backoff
-- config loading
-- structured logging
-- serialization
-- filesystem abstraction
-- CLI plumbing
-- auth / policy adapters
-- testing helpers
+For infrastructure such as parsing, validation, retries, configuration, logging, serialization, filesystem access, CLI plumbing, authentication, and testing helpers, compare mature packages with focused local code.
 
 ### 6. Choose the narrowest correct change
 
-Prefer:
+Prefer one existing path, one stable shared helper, and stable data contracts. Keep cleanup and architectural change tied directly to the tested behavior.
 
-- extending one existing path
-- extracting one stable shared helper
-- reusing stable data contracts
+## Prompt-writing standard
 
-Avoid:
-
-- broad cleanup
-- opportunistic refactors
-- adding a second architectural pattern
+Write every new prompt as a positive, actionable instruction. State the preferred reuse behavior and acceptance criteria directly.
 
 ## Output checklist
 
-Before finishing, state briefly:
-
-- what existing code was reused
-- what duplicate path was avoided
-- whether a package was considered
-- why the chosen path best matches the repository
+Report the reused code, canonical path, package assessment, and proportional evidence: Red and Green for executable behavior, or focused validation for configuration and documentation.
 
 ## Hard rules
 
 - Reuse before rewrite.
-- Generalize before duplicate.
-- Prefer one stable abstraction over two similar ones.
-- If new code overlaps strongly with old code, stop and refactor the boundary first.
+- Generalize stable shared flow before adding another implementation.
+- Prefer one stable abstraction for one responsibility.
+- Refactor the shared boundary first when new work overlaps strongly with existing code.

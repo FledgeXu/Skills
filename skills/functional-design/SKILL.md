@@ -7,137 +7,66 @@ description: Use this skill when writing or refactoring logic into clearer, more
 
 ## Goal
 
-Prefer functionally structured code:
-
-- explicit inputs and outputs
-- composition over mutation-heavy control flow
-- pure transformations separated from side effects
-- small reusable units
-
-This skill is about clarity, composability, and testability.
-It is not about abstraction for its own sake.
+Prefer explicit inputs and outputs, composition, pure transformations, isolated side effects, and small reusable units.
 
 ## Use this skill when
 
-- writing new business logic
-- refactoring long procedural functions
+- writing business logic
+- refactoring procedural functions
 - extracting reusable transformations
 - isolating I/O from pure computation
 - clarifying multi-step pipelines
+
+## Test-driven development
+
+Use Red → Green → Refactor for executable logic changes. Choose tests that protect meaningful behavior or realistic regression risks, with effort proportional to the logic. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Describe observable behavior through explicit input and output values.
+3. Confirm the focused test fails for the expected reason.
+4. Add the smallest pure transformation or boundary orchestration needed for Green.
+5. Refactor toward composition while all relevant tests remain green.
 
 ## Core principles
 
 ### 1. Separate pure logic from side effects
 
-Prefer:
-
-- pure transformation functions
-- I/O at the boundary
-- orchestration that wires together pure steps
-
-Avoid:
-
-- mixing parsing, validation, transformation, persistence, and logging in one block
-- hidden global state
-- mutating shared state across phases
+Place pure transformations in independently testable functions, side effects at system boundaries, and wiring in thin orchestration.
 
 ### 2. Design from data flow
 
-Before extracting functions, map the flow of data through the operation:
-
-1. identify the input shape
-2. identify the normalized shape
-3. identify the validated shape
-4. identify the transformed or enriched shape
-5. identify the final output shape
-
-Prefer each major transformation stage to correspond to a clear function or boundary.
+Map input, normalized, validated, transformed or enriched, and final output shapes before extracting functions.
 
 ### 3. Prefer composition
 
-Prefer:
-
-- small functions with one responsibility
-- pipeline-like flow
-- stable intermediate representations
-- helpers with explicit contracts
-
-Avoid:
-
-- giant control functions
-- deep nested branching when data transformation can be staged
-- stateful phase switching unless truly necessary
+Use small single-responsibility functions, pipeline-like flow, stable intermediate representations, and helpers with explicit contracts.
 
 ### 4. Keep data flow explicit
 
-Each step should make it obvious:
-
-- what it consumes
-- what it returns
-- what invariants it preserves
-- whether it performs side effects
+Each step should reveal what it consumes, returns, preserves, and whether it performs a side effect.
 
 ### 5. Use abstraction honestly
 
-Extract only when it:
-
-- removes real duplication
-- captures a stable concept
-- improves composability
-- keeps tracing and debugging easy
-
-Do not extract when it:
-
-- hides simple code
-- introduces generic layers with no reuse
-- makes local logic harder to follow
-- obscures where data changes shape
+Extract abstractions that remove real duplication, capture stable concepts, improve composability, and keep tracing easy. Keep simple local logic visible when extraction adds little value.
 
 ## Refactoring pattern
 
-When refactoring a large procedural block:
+1. Identify boundary effects such as I/O, network, filesystem, database, logging, and environment access.
+2. Identify pure stages such as parsing, normalization, validation, mapping, reduction, filtering, and derivation.
+3. Extract stable pure helpers with explicit input and return types and locally owned immutable values.
+4. Keep orchestration thin and readable.
 
-1. Identify boundary side effects
-   - I/O
-   - network
-   - file system
-   - database
-   - logging
-   - environment access
+## Prompt-writing standard
 
-2. Identify pure transformation stages
-   - parsing
-   - normalization
-   - validation
-   - mapping
-   - reduction
-   - filtering
-   - derivation
-
-3. Extract stable pure helpers
-   - explicit input types
-   - explicit return types
-   - no hidden mutation
-
-4. Leave orchestration thin
-   - call pure helpers
-   - perform side effects at edges
-   - preserve readable control flow
+Write every new prompt as a positive, actionable instruction. Specify the desired composition, boundary placement, and observable behavior.
 
 ## Output checklist
 
-When using this skill, report:
-
-- what side effects were isolated
-- what pure transformations were extracted
-- what data-flow stages were clarified
-- what duplication was removed
-- whether the resulting shape is easier to test
+Report isolated effects, pure transformations, clarified flow stages, reused logic, and proportional verification evidence.
 
 ## Hard rules
 
-- Side effects belong at boundaries.
-- Pure logic should be testable without environment setup.
-- Composition is preferred over mutation-heavy orchestration.
-- Do not extract abstractions before the data shapes and transformation stages are clear.
-- Readability wins over clever functional style.
+- Place side effects at boundaries.
+- Make pure logic testable with direct values and lightweight fixtures.
+- Prefer composition and readable flow.
+- Extract abstractions after shapes and transformation stages are clear.

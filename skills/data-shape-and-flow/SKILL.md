@@ -7,114 +7,62 @@ description: Use this skill when designing or refactoring code that depends on c
 
 ## Goal
 
-Design code from the shape of data and the path it takes through the system.
-
-Good abstractions should emerge from:
-
-- stable data structures
-- clear boundary shapes
-- explicit transformation stages
-- visible invariants
+Design code from stable data structures, clear boundary shapes, explicit transformation stages, and visible invariants.
 
 ## Use this skill when
 
-- designing a new module
-- introducing DTOs, schemas, models, or interfaces
-- refactoring long transformation-heavy functions
+- designing a module or typed contract
+- refactoring transformation-heavy functions
 - building adapters, pipelines, ETL flows, or service boundaries
 - moving data across architectural layers
+
+## Test-driven development
+
+Use Red → Green → Refactor for executable shape or flow changes. Choose tests that protect meaningful transformations, boundaries, or realistic regression risks. Validate configuration and documentation through their parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Express the expected input, intermediate invariant, boundary translation, or output in the test.
+3. Confirm the test fails at the intended transformation stage.
+4. Implement the smallest explicit shape transition that makes it pass.
+5. Refactor after focused and boundary tests are green.
 
 ## Core principles
 
 ### 1. Start from shape
 
-Before designing functions or abstractions, identify:
-
-- source input shape
-- normalized shape
-- validated shape
-- domain shape
-- output shape
-- persistence or transport shape if applicable
+Identify source, normalized, validated, domain, output, persistence, and transport shapes as applicable.
 
 ### 2. Make transformations explicit
 
-Prefer explicit stages such as:
-
-- parse
-- normalize
-- validate
-- enrich
-- map
-- aggregate
-- serialize
-
-Do not hide multiple shape transitions inside one opaque function.
+Use visible stages such as parse, normalize, validate, enrich, map, aggregate, and serialize. Give each significant shape transition a clear function or boundary.
 
 ### 3. Keep one canonical shape per layer
 
-Prefer:
-
-- transport shapes at boundaries
-- domain shapes in core logic
-- persistence shapes near storage
-- explicit translators between them
-
-Avoid:
-
-- one loose mutable structure passed through every layer
-- hidden field injection
-- silent shape drift
+Use transport shapes at transport boundaries, domain shapes in core logic, persistence shapes near storage, and explicit translators between layers.
 
 ### 4. Let abstractions follow flow
 
-Extract abstractions only after the data flow is clear.
-
-Good abstractions:
-
-- match real transformation stages
-- preserve visibility of inputs and outputs
-- reduce repeated shape handling
-- improve testability
-
-Bad abstractions:
-
-- obscure where data changes shape
-- merge unrelated stages too early
-- hide invariants
+Extract abstractions after the data flow is clear. Choose abstractions that match real stages, preserve visible inputs and outputs, reduce repeated shape handling, and improve testability.
 
 ### 5. Protect invariants
 
-For each stage, make clear:
-
-- what is guaranteed now
-- what has been validated
-- what remains optional or unresolved
+For each stage, state current guarantees, completed validation, and remaining optional or unresolved values.
 
 ### 6. Keep translations narrow
 
-Boundary translations should be:
+Keep boundary translations explicit, local, typed, and easy to test.
 
-- explicit
-- local
-- typed
-- easy to test
+## Prompt-writing standard
 
-Do not let translation logic leak everywhere.
+Write every new prompt as a positive, actionable instruction. Describe the desired shape, transition, invariant, and boundary directly.
 
 ## Review checklist
 
-Before finishing, confirm:
-
-- are the main shapes explicit?
-- are boundary translations visible?
-- is each transformation stage easy to locate?
-- does naming reflect role in the flow?
-- are side effects separated from transformation?
+Confirm that main shapes are explicit, translations are visible, transformation stages are locatable, names reveal flow roles, side effects remain at boundaries, and proportional evidence is recorded.
 
 ## Hard rules
 
-- Design from data flow, not from arbitrary layering.
-- Shape changes must be explicit.
-- One layer should not casually leak its shape into another.
-- Abstractions should clarify flow, not hide it.
+- Design from data flow and stable shapes.
+- Make every shape change explicit.
+- Translate shapes at clear layer boundaries.
+- Use abstractions that clarify flow.

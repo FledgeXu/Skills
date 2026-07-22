@@ -7,9 +7,7 @@ description: Use this skill for narrow bug fixes, review-driven patches, hotfixe
 
 ## Goal
 
-Solve the task with the smallest coherent change that fully addresses the issue.
-
-This skill protects reviewability, reduces accidental breakage, and avoids unnecessary churn.
+Solve the task with the smallest coherent change that fully addresses the issue and stays easy to review.
 
 ## Use this skill when
 
@@ -19,75 +17,52 @@ This skill protects reviewability, reduces accidental breakage, and avoids unnec
 - making targeted behavior changes
 - working in a large or fragile codebase
 
+## Test-driven development
+
+Use Red → Green → Refactor for targeted executable behavior changes. Choose the smallest test that protects meaningful behavior or a realistic recurrence risk. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Confirm the test fails for the reported behavior.
+3. Change the smallest implementation surface that makes it pass.
+4. Run focused regression checks.
+5. Refactor only within the tested surface while all checks stay green.
+
 ## Rules
 
-### 1. Change only what is needed
+### 1. Change the required surface
 
-Prefer:
+Prefer narrow local fixes, one stable abstraction adjustment, and small extractions that directly improve correctness or remove causal duplication.
 
-- narrow local fixes
-- one stable abstraction adjustment
-- small extractions only when they reduce duplication or clarify the fix
+### 2. Preserve established patterns
 
-Avoid:
-
-- opportunistic refactors
-- style churn unrelated to the fix
-- broad renaming
-- architecture shifts not required by the task
-
-### 2. Preserve existing patterns unless they are the bug
-
-Do not introduce:
-
-- a second style for the same responsibility
-- new abstractions just to look cleaner
-- additional indirection without payoff
+Use the existing style and responsibility boundary. Introduce indirection when it provides a concrete correctness or reuse benefit.
 
 ### 3. Keep the patch reviewable
 
-A good patch should make it easy to answer:
+A reviewer should quickly see the failing behavior, changed lines, reason for the fix, and protecting test.
 
-- what broke?
-- what changed?
-- why this fix?
-- what behavior is now protected?
+### 4. Tie refactoring to correctness
 
-### 4. Refactor only if necessary
+Refactor when it enables the fix, removes causal duplication, clarifies the broken boundary, or reduces recurrence risk with a small surface.
 
-Refactor only when it directly:
+### 5. Preserve data-flow clarity
 
-- enables the fix
-- removes the exact duplication causing the bug
-- clarifies the broken boundary
-- reduces recurrence risk with minimal added surface
-
-### 5. Preserve data flow clarity
-
-Do not widen scope just because the surrounding flow could be cleaner.
-Only touch neighboring flow stages when they directly affect correctness.
+Touch neighboring flow stages when they directly affect the tested correctness.
 
 ## Decision test
 
-Before expanding scope, ask:
+Before expanding scope, identify the direct correctness benefit, review impact, and test coverage for each additional line.
 
-- does this line need to change to fix the bug?
-- does this extraction materially improve correctness?
-- will this extra cleanup make review harder?
+## Prompt-writing standard
 
-If the answer is unclear, do less.
+Write every new prompt as a positive, actionable instruction. Describe the exact desired behavior and the smallest accepted scope.
 
 ## Output checklist
 
-Report:
-
-- what was changed
-- what was deliberately not changed
-- whether any small refactor was necessary for correctness
-- what focused verification was run
+Report changed scope, preserved surrounding scope, required refactoring, and proportional verification evidence.
 
 ## Hard rules
 
-- Narrow is better than broad.
-- Correct and reviewable beats ambitious cleanup.
-- Do not smuggle refactors into a bug fix.
+- Prefer a narrow coherent patch.
+- Optimize for correctness and reviewability.
+- Keep refactoring directly connected to the tested fix.

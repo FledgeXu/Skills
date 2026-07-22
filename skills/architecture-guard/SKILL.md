@@ -1,105 +1,64 @@
 ---
 name: architecture-guard
-description: Use this skill when a task risks crossing layers, bypassing boundaries, introducing a second pattern, or weakening the repository’s architectural consistency.
+description: Use this skill when a task crosses layers, changes boundaries, introduces a pattern, or affects the repository’s architectural consistency.
 ---
 
 # Architecture Guard
 
 ## Goal
 
-Preserve the repository’s architectural coherence.
-
-Do not casually weaken boundaries, bypass stable abstractions, or introduce a second pattern for the same responsibility.
+Preserve the repository’s architectural coherence through stable boundaries, established abstractions, and one pattern for each responsibility.
 
 ## Use this skill when
 
 - changing shared modules
-- adding a new service / adapter / layer
+- adding a service, adapter, or layer
 - moving logic across boundaries
-- replacing existing abstractions
-- touching a codebase with established layering
+- replacing abstractions
+- working in an established layered codebase
+
+## Test-driven development
+
+Use Red → Green → Refactor for executable boundary changes. Choose tests that protect meaningful ownership, dependency, and integration behavior. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Capture the expected ownership, dependency direction, or boundary translation.
+3. Confirm the test fails at the intended architectural seam.
+4. Make the smallest boundary-preserving change that passes.
+5. Refactor after focused and integration tests are green.
 
 ## Required checks
 
 ### 1. Identify current boundaries
 
-Map the local architecture:
-
-- domain logic
-- orchestration
-- I/O boundaries
-- adapters
-- transport / DTO layer
-- persistence layer
-- UI / controller / presentation layer
+Map domain logic, orchestration, I/O, adapters, transport, persistence, and presentation layers.
 
 ### 2. Respect existing responsibilities
 
-Ask:
-
-- which layer owns this logic?
-- does the proposed change cross a boundary?
-- does it force lower-level details into higher-level code?
-- does it duplicate an existing pattern?
+Identify the owning layer, dependency direction, established pattern, and required translation point.
 
 ### 3. Protect boundary shapes
 
-Each architectural layer should have clear data boundaries.
+Use transport shapes for transport, domain shapes for domain logic, persistence shapes for persistence, and explicit translation points between them.
 
-Prefer:
+### 4. Maintain architectural alignment
 
-- transport shapes for transport
-- domain shapes for domain logic
-- persistence shapes for persistence
-- explicit translation points between them
+Route I/O through adapters, keep persistence at its boundary, translate transport and domain shapes explicitly, and use established extension points.
 
-Avoid leaking one layer’s shape directly into another unless that simplicity is clearly justified.
+### 5. Justify new abstractions positively
 
-### 4. Avoid architectural drift
+Introduce a layer or abstraction when it captures a stable concept, removes recurring duplication, protects a useful boundary, and improves overall consistency.
 
-Do not:
+## Prompt-writing standard
 
-- bypass adapters casually
-- place persistence logic in domain transformation code
-- mix transport shapes with domain shapes without a clear translation boundary
-- introduce convenience shortcuts that weaken the architecture
-
-### 5. Introduce new abstraction only with justification
-
-A new layer or abstraction is justified only when it:
-
-- captures a stable concept
-- removes recurring duplication
-- protects a useful boundary
-- improves consistency more than it increases complexity
-
-## Preferred outcomes
-
-Prefer:
-
-- keeping the current layering intact
-- adding small boundary-preserving helpers
-- reusing one stable pattern
-- making translation points explicit
-
-Avoid:
-
-- second architectures
-- ad hoc shortcuts
-- "temporary" bypasses that become permanent
-- generic layers with no demonstrated reuse
+Write every new prompt as a positive, actionable instruction. State the intended owner, boundary, dependency direction, and accepted pattern.
 
 ## Output checklist
 
-Report:
-
-- what boundary was preserved
-- whether any cross-layer change was needed
-- why a new abstraction was or was not introduced
-- how the result stays consistent with neighboring code
+Report the preserved boundary, cross-layer changes, abstraction decision, neighboring pattern alignment, and proportional verification evidence.
 
 ## Hard rules
 
-- Consistency is a feature.
-- Boundary violations require explicit justification.
-- One repository should not accumulate multiple competing patterns for the same responsibility.
+- Treat consistency as a feature.
+- Provide explicit justification for each boundary change.
+- Keep one established pattern for each responsibility.

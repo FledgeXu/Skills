@@ -7,91 +7,68 @@ description: Use this skill after code changes to choose and run the smallest me
 
 ## Goal
 
-Do not claim completion without verification when runnable checks are available.
-
-Prefer the smallest meaningful verification first, then expand only when necessary.
+Support every completion claim with runnable evidence, starting with the smallest meaningful check.
 
 ## Use this skill when
 
-- any code change was made
-- a bug fix was applied
-- a refactor was completed
-- a new abstraction was introduced
-- a schema or contract changed
+- any code or prompt change was made
+- a bug fix or refactor was completed
+- an abstraction, schema, or contract changed
+
+## Test-driven development
+
+Use Red → Green → Refactor as the verification timeline for executable behavior. Choose tests that protect meaningful behavior, contracts, boundaries, or realistic regression risks, with effort proportional to the change. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+1. Write or update a focused test before changing implementation.
+2. Run it and record the expected Red result.
+3. Run it again after implementation and record the Green result.
+4. Run the smallest relevant lint, type, regression, and integration checks.
+5. Refactor while keeping the selected checks green.
 
 ## Verification strategy
 
 ### 1. Start with focused checks
 
-Prefer:
+Lint changed files, type-check affected modules, run nearby focused tests, and exercise the changed behavior directly.
 
-- lint changed files
-- type-check affected modules
-- run focused tests near the changed code
-- run one targeted command that exercises the changed behavior
+### 2. Expand according to impact
 
-### 2. Expand only if needed
+Add broader checks for shared abstractions, type contracts, integration points, and other affected consumers.
 
-Escalate to broader checks when:
+### 3. Verify data-flow-sensitive changes
 
-- the change affects shared abstractions
-- type contracts changed
-- integration points changed
-- focused checks are insufficient to establish confidence
-
-### 3. Verify data-flow-sensitive changes appropriately
-
-If the change affects shape transitions or boundary mappings, prioritize:
-
-- tests around normalization
-- tests around validation
-- tests around serialization / deserialization
-- tests around mapper behavior
-- static checking of the affected boundary types
+Prioritize normalization, validation, serialization, deserialization, mapping, and boundary-type checks.
 
 ### 4. Report verification precisely
 
-State:
-
-- what commands were run
-- what passed
-- what was not run
-- what residual uncertainty remains, if any
+State commands, results, skipped checks with their reason, and residual uncertainty.
 
 ## Verification order
 
-Typical order:
+1. focused test in Red
+2. focused test in Green
+3. formatting and lint for touched files
+4. type-check for affected modules
+5. focused regression tests
+6. broader tests proportional to impact
 
-1. formatting / lint for touched files
-2. type-check for affected module or package
-3. focused tests
-4. broader tests only when justified
+## Evidence rules
 
-## Honesty rules
+- Use “verified” after running the relevant checks.
+- Use “passing” when the reported checks passed.
+- Use “fixed” after validation demonstrates the corrected behavior.
+- Describe unavailable checks, the substitute evidence, and remaining uncertainty precisely.
 
-Do not say:
+## Prompt-writing standard
 
-- "verified" if nothing was run
-- "all good" when checks failed
-- "fixed" if only a hypothesis was applied without validation
-
-If checks could not be run, say:
-
-- why not
-- what was checked instead
-- what remains unverified
+Write every new prompt as a positive, actionable instruction. Specify the evidence required for Red, Green, regression coverage, and honest reporting.
 
 ## Output checklist
 
-Always report:
-
-- commands run
-- results
-- skipped checks
-- any remaining risk
+Always report commands, proportional evidence, skipped checks, and remaining risk. Include Red and Green results for executable behavior changes.
 
 ## Hard rules
 
-- Verification is part of the task, not an optional extra.
-- Focused verification is preferred to noisy broad runs.
-- Claims must match actual evidence.
+- Treat verification as part of the task.
+- Prefer focused evidence before broader suites.
+- Match every claim to actual evidence.
