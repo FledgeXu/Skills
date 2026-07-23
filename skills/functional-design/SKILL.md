@@ -17,9 +17,11 @@ Prefer explicit inputs and outputs, composition, pure transformations, isolated 
 - isolating I/O from pure computation
 - clarifying multi-step pipelines
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable logic changes. Choose tests that protect meaningful behavior or realistic regression risks, with effort proportional to the logic. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before executable logic changes, identify test points that protect meaningful behavior or realistic regression risks, with effort proportional to the logic. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Describe observable behavior through explicit input and output values.

@@ -6,7 +6,7 @@ This file defines my global engineering preferences.
 
 Default stance:
 
-- test-driven development
+- user-confirmed test-driven development
 - reuse before rewrite
 - data shape and flow first
 - clear abstractions
@@ -22,15 +22,19 @@ Before changing implementation:
 1. identify the core data shapes
 2. identify how data flows across boundaries and transformations
 3. inspect existing modules, abstractions, and tests for reuse
-4. define the desired behavior with a focused failing test
-5. prefer extending an existing abstraction over creating a parallel one
-6. consider whether a mature package already solves the problem
-7. implement the smallest change that passes the test
-8. refactor while keeping the test suite green
+4. identify the meaningful test points for the requested behavior
+5. treat test points stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation
+6. define the confirmed behavior with a focused failing test
+7. prefer extending an existing abstraction over creating a parallel one
+8. consider whether a mature package already solves the problem
+9. implement the smallest change that passes the test
+10. refactor while keeping the test suite green
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable behavior changes:
+Agree on the test points with the user before changing executable implementation. Treat test points explicitly stated by the user as confirmed. When the user has not specified them, propose focused test points that protect meaningful behavior, contracts, boundaries, or realistic regression risks, and obtain confirmation.
+
+After confirmation, use Red → Green → Refactor for executable behavior changes:
 
 1. Write or update a focused test before changing implementation.
 2. Run the focused test and confirm that it fails for the expected reason.
@@ -38,7 +42,7 @@ Use Red → Green → Refactor for executable behavior changes:
 4. Run the focused test and relevant regression checks.
 5. Refactor only while all tests remain green.
 
-Treat a test-first sequence as part of the deliverable. Record the failing Red result and the passing Green result in the final report.
+Treat the confirmed test scope and test-first sequence as part of the deliverable. Record the confirmed test points, failing Red result, and passing Green result in the final report.
 
 Choose tests that protect meaningful behavior, contracts, boundaries, or realistic regression risks. Keep each test proportional to the value and risk of the change.
 
@@ -102,5 +106,5 @@ When finishing a task, report briefly:
 - what existing code was reused
 - whether a package was considered
 - what abstraction or boundary was preserved or introduced
-- which test demonstrated Red and Green for executable behavior changes
+- which test points were confirmed and which tests demonstrated Red and Green for executable behavior changes
 - which validation evidence covered configuration or documentation changes

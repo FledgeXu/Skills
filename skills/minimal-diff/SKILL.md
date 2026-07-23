@@ -17,9 +17,11 @@ Solve the task with the smallest coherent change that fully addresses the issue 
 - making targeted behavior changes
 - working in a large or fragile codebase
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for targeted executable behavior changes. Choose the smallest test that protects meaningful behavior or a realistic recurrence risk. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before targeted executable behavior changes, identify the smallest test points that protect meaningful behavior or a realistic recurrence risk. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Confirm the test fails for the reported behavior.

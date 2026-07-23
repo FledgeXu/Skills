@@ -17,9 +17,11 @@ Preserve the repository’s architectural coherence through stable boundaries, e
 - replacing abstractions
 - working in an established layered codebase
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable boundary changes. Choose tests that protect meaningful ownership, dependency, and integration behavior. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before executable boundary changes, identify test points that protect meaningful ownership, dependency, and integration behavior. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Capture the expected ownership, dependency direction, or boundary translation.

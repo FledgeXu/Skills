@@ -15,9 +15,11 @@ Support every completion claim with runnable evidence, starting with the smalles
 - a bug fix or refactor was completed
 - an abstraction, schema, or contract changed
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor as the verification timeline for executable behavior. Choose tests that protect meaningful behavior, contracts, boundaries, or realistic regression risks, with effort proportional to the change. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before executable behavior changes, identify test points that protect meaningful behavior, contracts, boundaries, or realistic regression risks, with effort proportional to the change. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor as the verification timeline:
 
 1. Write or update a focused test before changing implementation.
 2. Run it and record the expected Red result.
@@ -45,12 +47,13 @@ State commands, results, skipped checks with their reason, and residual uncertai
 
 ## Verification order
 
-1. focused test in Red
-2. focused test in Green
-3. formatting and lint for touched files
-4. type-check for affected modules
-5. focused regression tests
-6. broader tests proportional to impact
+1. confirm the test points with the user
+2. focused test in Red
+3. focused test in Green
+4. formatting and lint for touched files
+5. type-check for affected modules
+6. focused regression tests
+7. broader tests proportional to impact
 
 ## Evidence rules
 
@@ -61,11 +64,11 @@ State commands, results, skipped checks with their reason, and residual uncertai
 
 ## Prompt-writing standard
 
-Write every new prompt as a positive, actionable instruction. Specify the evidence required for Red, Green, regression coverage, and honest reporting.
+Write every new prompt as a positive, actionable instruction. Specify the test points to confirm and the evidence required for Red, Green, regression coverage, and honest reporting.
 
 ## Output checklist
 
-Always report commands, proportional evidence, skipped checks, and remaining risk. Include Red and Green results for executable behavior changes.
+Always report commands, proportional evidence, skipped checks, and remaining risk. Include confirmed test points and Red and Green results for executable behavior changes.
 
 ## Hard rules
 

@@ -15,9 +15,11 @@ Choose the option with the strongest functional fit, architectural alignment, ty
 - proposing custom infrastructure
 - building configuration, validation, retry, logging, CLI, adapter, parsing, or serialization plumbing
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable behavior delivered by the selected option. Choose tests that protect required capabilities and realistic integration risks. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before delivering executable behavior with the selected option, identify test points that protect required capabilities and realistic integration risks. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Express required behavior and boundary expectations independently of the candidate implementation.
@@ -52,7 +54,7 @@ Prefer custom code when domain logic carries the complexity, package fit is weak
 
 ### Verification evidence
 
-- Red and Green for executable behavior, or focused validation for configuration and documentation
+- confirmed test points plus Red and Green for executable behavior, or focused validation for configuration and documentation
 
 ## Prompt-writing standard
 

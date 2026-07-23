@@ -16,9 +16,11 @@ Design code from stable data structures, clear boundary shapes, explicit transfo
 - building adapters, pipelines, ETL flows, or service boundaries
 - moving data across architectural layers
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable shape or flow changes. Choose tests that protect meaningful transformations, boundaries, or realistic regression risks. Validate configuration and documentation through their parsers, schemas, linters, formatters, or focused review.
+Before executable shape or flow changes, identify test points that protect meaningful transformations, boundaries, or realistic regression risks. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through their parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Express the expected input, intermediate invariant, boundary translation, or output in the test.

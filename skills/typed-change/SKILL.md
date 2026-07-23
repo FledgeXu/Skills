@@ -16,9 +16,11 @@ Preserve and improve type safety across the full propagation path of every data-
 - updating serializer or deserializer behavior
 - touching typed boundaries in Python, TypeScript, or similar languages
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable contract changes. Choose tests and static checks that protect meaningful boundary behavior and realistic compatibility risks. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before executable contract changes, identify test points and static checks that protect meaningful boundary behavior and realistic compatibility risks. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Capture the new shape in boundary tests, fixtures, and static expectations.

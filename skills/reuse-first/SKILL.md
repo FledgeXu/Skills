@@ -24,9 +24,11 @@ Default preference order:
 - refactoring overlapping logic
 - introducing an abstraction or dependency
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for executable behavior changes. Choose tests that protect meaningful behavior or realistic regression risks, with effort proportional to the change. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before executable behavior changes, identify test points that protect meaningful behavior or realistic regression risks, with effort proportional to the change. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Confirm the test fails for the expected missing or incorrect behavior.
@@ -65,7 +67,7 @@ Write every new prompt as a positive, actionable instruction. State the preferre
 
 ## Output checklist
 
-Report the reused code, canonical path, package assessment, and proportional evidence: Red and Green for executable behavior, or focused validation for configuration and documentation.
+Report the reused code, canonical path, package assessment, and proportional evidence: confirmed test points plus Red and Green for executable behavior, or focused validation for configuration and documentation.
 
 ## Hard rules
 

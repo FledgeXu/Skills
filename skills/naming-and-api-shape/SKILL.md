@@ -16,9 +16,11 @@ Use semantically precise names and interfaces that make correct usage obvious.
 - extracting an abstraction
 - reviewing helper names and parameter shapes
 
-## Test-driven development
+## User-confirmed test-driven development
 
-Use Red → Green → Refactor for observable executable API changes. Choose tests that protect meaningful caller behavior, compatibility, or realistic misuse risks. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+Before observable executable API changes, identify test points that protect meaningful caller behavior, compatibility, or realistic misuse risks. Treat test points explicitly stated by the user as confirmed; otherwise propose focused test points and obtain user confirmation. Validate configuration and documentation through parsers, schemas, linters, formatters, or focused review.
+
+After confirmation, use Red → Green → Refactor:
 
 1. Write or update a focused test before changing implementation.
 2. Express the desired call shape, return value, error behavior, or compatibility contract.
